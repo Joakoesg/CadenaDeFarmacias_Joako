@@ -1,0 +1,71 @@
+
+package com.mycompany.ejemplo1sam;
+
+import java.sql.ResultSet;
+import java.sql.*;
+public class Ejemplo1sam {
+
+    public static void main(String[] args) {
+   
+   
+   try{
+       Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+       String url="jdbc:sqlserver://localhost:1433;databaseName=mercado:encrypt=true;trustServerCertificate=true";
+       Connection con =DriverManager.getConnection(url,"sa","12345");
+       Statement st=con.createStatement();
+        String consulta="SELECT *FROM producto";       
+ResultSet res =st.executeQuery(consulta);  
+st.executeQuery(consulta);
+while(res.next()){
+   String id=res.getString("ID");
+   String nombre=res.getString("Nombre");
+   String precio=res.getString("Precio");
+    System.out.println(id+"   "+nombre+"   "precio);
+
+}
+
+st.close();
+con.close();
+   }catch(ClassNotFoundException e){
+     e.printStackTrace();
+ }catch(SQLException e){
+ e.printStackTrace();       
+ }        
+
+ 
+
+}
+}
+
+
+
+
+POM
+
+
+
+?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mycompany</groupId>
+    <artifactId>ejemplo1sam</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
+        <exec.mainClass>com.mycompany.ejemplo1sam.Ejemplo1sam</exec.mainClass>
+    </properties>
+    
+
+    <dependencies>
+   <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
+<dependency>
+    <groupId>com.microsoft.sqlserver</groupId>
+    <artifactId>mssql-jdbc</artifactId>
+    <version>11.2.1.jre18</version>
+</dependency>
+ </dependencies>  
+ 
+</project>
