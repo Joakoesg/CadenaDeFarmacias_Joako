@@ -1,48 +1,52 @@
 //clase CCONEXION
-
-package com.mycompany.joako1;
-
+package com.mycompany.conectarsql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 public class Cconexion {
- 
-   public static Connection establecerconexion() {
-       String conexionURL ="jdbc:sqlserver://localhost:1433;databaseName=Northwind;encrypt=true;trustServerCertificate=true";
-   try{
-      Connection con=DriverManager.getConnection(conexionURL,"sa","12345");
-      System.out.println("bien");
-     return con;
-  }
-  catch(SQLException ex){
-       System.out.println("mal"+ex.toString());
-       return null;
-    }      
-    } 
+    public static Connection establecerconexion(){
+        String conexionURL = "jdbc:sqlserver://localhost:1433;databaseName=Northwind;encrypt=true; trustServerCertificate=true";
+        try{
+            Connection con = DriverManager.getConnection(conexionURL, "sa", "12345");
+            System.out.println("Se conecto!");
+            return con;
+        }
+        catch(SQLException ex){
+            System.out.println("Fallo la conexion" +ex.toString());
+            return null;
+        }
+    }
 }
 
+//CLASE CONECTARSQL
 
-//CLASE MAVENPROKJECT
-package com.mycompany.joako1;
-import java.sql.*;
-public class ConectarSQL {  
- public static void main(String[] args) throws SQLException, ClassNotFoundException{
-   
-   Cconexion.establecerconexion();  
-   Statement sql=Cconexion.establecerconexion().createStatement();
-   ResultSet rs=sql.executeQuery("Select*from Products");
-   
-     while(rs.next()){
-         System.out.println( rs.getInt(1) + "\t" +  rs.getString(2) + "\t" +  rs.getInt(3) + "\t" +  rs.getInt(4) + "\t" + 
-                  rs.getString(5) + "\t" +  rs.getInt(6) + "\t" +  rs.getInt(7) + "\t" +  rs.getInt(8) + "\t" + 
-                  rs.getInt(9) + "\t" +  rs.getBoolean(10));
+package com.mycompany.conectarsql;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class ConectarSQL {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        Cconexion.establecerconexion();
+        Statement sql= Cconexion.establecerconexion().createStatement();
+        ResultSet rs = sql.executeQuery("SELECT ProductID, ProductName, UnitPrice FROM Products WHERE ProductID > 15 OR UnitPrice < 10");
+        while(rs.next()){
+            System.out.println(rs.getInt("ProductID") + "\t" + rs.getString("ProductName") + "\t" + rs.getInt("UnitPrice")); 
+        }
+        
+        String crea = "CREATE TABLE Campo (IdCampo INTEGER, Nombre VARCHAR(32), Instituto VARCHAR, PRIMARY KEY (IdCampo))";
+        sql.executeUpdate(crea);
+        
+        String delete = "DROP TABLE Campo";
+        sql.executeUpdate(delete);
+    }
 }
 }
 }
+}
+
 
 //DEPENDENCUYS POM MAVEN
-
 <dependencies>    
     <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
 <dependency>
