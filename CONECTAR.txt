@@ -56,4 +56,44 @@ public class ConectarSQL {
 </dependency>
     </dependencies>
     
+// FRAME
+ 
+package com.mycompany.conectarsql;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+public class FRAME extends javax.swing.JFrame {
+   Cconexion app=new Cconexion();
+   
+    //BOTTON MOSTRAR
+    app.establecerconexion();
+        Statement stmt=null;
+         try{
+             stmt= Cconexion.establecerconexion().createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT ProductID, ProductName, UnitPrice FROM Products ");
+        String mensaje="";
+        while(rs.next()){
+            mensaje+=rs.getInt("ProductID") + "\n" 
+                   + rs.getString("ProductName") + "\n" 
+                   + rs.getInt("UnitPrice"); 
+        }
+        TA.setText(mensaje);
+         }
+         catch(SQLException e){ JOptionPane.showMessageDialog(this, e.getMessage());
+    }
 
+    //BOTON AGREGAR
+    app.establecerconexion();
+        Statement stmt=null;
+        try{
+         stmt= Cconexion.establecerconexion().createStatement();
+        String nombr=nombre.getText();
+        double precio= Double.parseDouble(tprecio.getText());
+        String insertar="\"INSERT INTO Products(ProductName,UnitPrice) VALUES ('Aji amarillo','666')\"";
+        stmt.executeUpdate(insertar);
+        TA.setText(nombr);
+         }
+         catch(SQLException e){ JOptionPane.showMessageDialog(this, e.getMessage());
+             
+         }
