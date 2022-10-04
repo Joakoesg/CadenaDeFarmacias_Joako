@@ -84,16 +84,20 @@ public class FRAME extends javax.swing.JFrame {
     }
 
     //BOTON AGREGAR
-    app.establecerconexion();
-        Statement stmt=null;
-        try{
-         stmt= Cconexion.establecerconexion().createStatement();
-        String nombr=nombre.getText();
-        double precio= Double.parseDouble(tprecio.getText());
-        String insertar="\"INSERT INTO Products(ProductName,UnitPrice) VALUES ('Aji amarillo','666')\"";
-        stmt.executeUpdate(insertar);
-        TA.setText(nombr);
-         }
-         catch(SQLException e){ JOptionPane.showMessageDialog(this, e.getMessage());
-             
-         }
+   cconexion app= new cconexion();
+     app.establecerconexion();
+     PreparedStatement ps=null;
+    String inserta= "INSERT INTO Products(ProductName,UnitPrice) VALUES(?,?)";
+    try{
+        String nombre= TNOMBRE.getText();
+        double precio=Double.parseDouble(TPRECIO.getText()  );
+        ps=app.establecerconexion().prepareStatement(inserta);
+        ps.setString(1, nombre);
+         ps.setDouble(2, precio);
+         ps.executeUpdate();
+    }
+     catch(SQLException e){
+         JOptionPane.showMessageDialog(this, e.getMessage());
+     }
+         
+        
