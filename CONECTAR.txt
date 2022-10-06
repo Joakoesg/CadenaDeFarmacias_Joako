@@ -45,7 +45,6 @@ public class ConectarSQL {
 }
 }
 
-
 //DEPENDENCUYS POM MAVEN
 <dependencies>    
     <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
@@ -120,3 +119,27 @@ public class FRAME extends javax.swing.JFrame {
     catch(SQLException e){
      JOptionPane.showMessageDialog(this, e.getMessage());
     }
+    
+//boton modificar (TABLA)
+   cconexion.establecerconexion();
+     PreparedStatement ps=null;
+     String inserta="UPDATE Products set ProductName=?,UnitPrice=? where ProductId=? ";
+        try{
+     String nombre=   NOMBRE.getText();
+     double precio =Double.parseDouble(PRECIO.getText());
+     ps=cconexion.establecerconexion().prepareCall(inserta);
+     int fila=TablaProductos.getSelectedRow();
+     int id=Integer.parseInt(TablaProductos.getValueAt(fila,0).toString());
+     ps.setString(1, nombre);
+     ps.setDouble(2, precio);
+     ps.setInt(3, id);
+     
+     ps.executeUpdate();
+    }
+    catch(SQLException e){
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
+
+
+
+
