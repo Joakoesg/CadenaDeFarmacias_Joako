@@ -100,4 +100,23 @@ public class FRAME extends javax.swing.JFrame {
          JOptionPane.showMessageDialog(this, e.getMessage());
      }
          
-        
+ //BOTON MOSTRAR (TABLA)
+  String mensaje="";
+    try{
+    cconexion.establecerconexion();
+    Statement sql=cconexion.establecerconexion().createStatement();
+    ResultSet rs=sql.executeQuery("SELECT ProductID,ProductName,UnitPrice FROM Products");
+    String [][] Matriz=new String[100][3];
+    int i=0;
+    while(rs.next()){
+      Matriz[i][0]=String.valueOf(rs.getInt("ProductID"));
+      Matriz[i][1]=rs.getString("ProductName");
+      Matriz[i][2]=String.valueOf(rs.getDouble("UnitPrice"));
+      i++;
+    }
+    DefaultTableModel dtm= new DefaultTableModel(Matriz,new String[]{"","",""});
+    TablaProductos.setModel(dtm);
+    }
+    catch(SQLException e){
+     JOptionPane.showMessageDialog(this, e.getMessage());
+    }
